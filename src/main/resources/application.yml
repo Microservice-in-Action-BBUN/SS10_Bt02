@@ -1,24 +1,30 @@
 spring:
   application:
-    name: rikkeipay-transfer-service
+    name: order-service
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+      client:
+        config:
+          default:
+            connectTimeout: 2000
+            readTimeout: 3000
+            loggerLevel: full
+          product-service:
+            connectTimeout: 2000
+            readTimeout: 3000
+            loggerLevel: full
+          user-service:
+            connectTimeout: 2000
+            readTimeout: 3000
+            loggerLevel: basic
 
-# Cấu hình tích hợp Langfuse LLMOps Platform
-langfuse:
-  # Khóa Public Key lấy từ biến môi trường (Có giá trị mặc định cho local testing)
-  public-key: ${LANGFUSE_PUBLIC_KEY:pk-lf-default-public-key}
-  
-  # Khóa Secret Key lấy từ biến môi trường hoặc AWS Secrets Manager / HashiCorp Vault
-  secret-key: ${LANGFUSE_SECRET_KEY:sk-lf-default-secret-key}
-  
-  # Địa chỉ Langfuse Host Server (Self-Host Local hoặc Endpoint Doanh nghiệp trong mạng VPC nội bộ)
-  host: ${LANGFUSE_HOST:http://localhost:3000}
-  
-  # Cờ bật/tắt gửi Telemetry Tracing
-  enabled: ${LANGFUSE_ENABLED:true}
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
 
-# Cấu hình Logging mức chi tiết
 logging:
   level:
-    root: INFO
-    com.rikkeipay: DEBUG
-    io.langfuse: INFO
+    com.vietmart.order_service.client: DEBUG
